@@ -1,0 +1,200 @@
+---
+alwaysApply: true
+---
+
+
+# Next.js Senior Developer Rules
+
+## Architecture Rules
+
+### Folder Structure
+- `app/`: ONLY for routing. No business logic here.
+  - Use route groups: `(auth)`, `(dashboard)` for layout grouping.
+- `features/`: Domain-driven logic. Each feature has:
+  - `api/`: API calls (Axios)
+  - `components/`: Feature-specific UI
+  - `hooks/`: Custom hooks (TanStack Query)
+  - `schemas/`: Zod validation schemas
+  - `types/`: TypeScript interfaces
+- `components/ui/`: Shadcn primitives
+- `components/shared/`: Reusable app-wide components
+- `lib/`: Core utilities (Axios, Redux, helpers)
+- `config/`: Configuration files (env, queryClient)
+
+### Routing
+- All routes defined in `app/` directory ONLY.
+- Never create route files inside `features/`.
+- Use Server Components by default, add `"use client"` only when necessary.
+
+## Tech Stack Specifics
+
+### Next.js 16
+- Use App Router
+- Prefer Server Components
+- Use `redirect()` for server-side redirects
+- Use `useRouter()` from `next/navigation` (not `next/router`)
+- Server Actions: Use inline or in server files with `"use server"`
+
+### Tailwind v4
+- **CSS-first configuration**: All theme tokens in `app/globals.css`
+- Use `@theme` for design tokens (colors, radii, fonts)
+- Avoid `tailwind.config.js` unless absolutely necessary
+- Use utility classes from the defined design system
+- Never use inline color values; use semantic tokens (e.g., `bg-primary`, `text-muted-foreground`)
+
+### Authentication
+- Authentication is **not pre-configured**.
+- Implement your own strategy (JWT, session, etc.).
+- Use `features/auth/hooks/useAuth.ts` for auth logic.
+- Add route protection via middleware or client guards.
+
+### State Management
+- **Server State**: ALWAYS use TanStack Query (`useQuery`, `useMutation`)
+  - Never store API data in Redux
+  - Use query keys as tuples: `["projects"]`, `["projects", id]`
+- **Client State**: Use Redux Toolkit for global UI state (theme, user, sidebar)
+- **Form State**: Use React Hook Form + Zod
+
+### API Layer
+- All API calls in `features/[feature]/api/`
+- Use the Axios instance from `lib/api/axios-instance.ts`
+- Define request/response types in `features/[feature]/types/`
+- Currently using mock APIs; replace with real endpoints
+
+### Forms & Validation
+- Use React Hook Form with `zodResolver`
+- Define schemas in `features/[feature]/schemas/`
+- Export inferred types: `export type LoginInput = z.infer<typeof loginSchema>`
+- Always validate on both client and server
+
+## Code Style
+
+### TypeScript
+- Strict mode enabled
+- Always define types/interfaces
+- Prefer interfaces for object shapes
+- Use `type` for unions, primitives, and inferred types
+
+### Components
+- Use functional components with TypeScript
+- Props interface: `interface ComponentNameProps { ... }`
+- Export component and types separately when needed
+- Shadcn pattern: Export primitives from `components/ui/`
+
+### Naming Conventions
+- Components: PascalCase (`LoginForm`, `ProjectsTable`)
+- Files: kebab-case for components (`login-form.tsx`)
+- Hooks: camelCase starting with `use` (`useProjects`, `useAuth`)
+- Types/Interfaces: PascalCase (`Project`, `AuthUser`)
+- API functions: camelCase (`getProjects`, `createProject`)
+
+### Imports
+- Use `@/` alias for absolute imports
+- Order: React, Next.js, external libs, internal components, types, utils
+- Group imports logically
+
+## Component Patterns
+
+### UI Components (Shadcn)
+- Located in `components/ui/`
+- Use Radix UI primitives where applicable
+- Style with Tailwind utility classes
+- Use `cn()` helper from `lib/utils.ts` for conditional classes
+- Follow CVA pattern for variants
+
+### Shared Components
+- Located in `components/shared/`
+- Examples: `PageHeader`, `EmptyState`, `LoadingSpinner`
+- Should be generic and reusable
+
+### Feature Components
+- Located in `features/[feature]/components/`
+- Can be feature-specific
+- Use `"use client"` directive when needed
+
+## Hooks Patterns
+
+### TanStack Query
+```typescript
+// Query
+export const useProjects = () => {
+  return useQuery({
+    queryKey: ["projects"],
+    queryFn: projectsApi.getProjects,
+  });
+};
+
+// Mutation
+export const useCreateProject = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: projectsApi.createProject,
+    onSuccess: () => {
+      toast.success("Created!");
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+    },
+  });
+};
+```
+
+### Custom Hooks
+- Co-locate with feature if feature-specific
+- Use `hooks/` at root for global hooks
+- Always return objects for multiple values
+
+## Error Handling
+- Use Sonner for toast notifications
+- Show user-friendly error messages
+- Use `ErrorBlock` component for inline errors
+- Normalize Axios errors in interceptors
+
+## Best Practices
+
+### Do's
+✅ Use Server Components by default
+✅ Validate all user input with Zod
+✅ Use semantic Tailwind tokens
+✅ Co-locate feature logic in `features/`
+✅ Use TanStack Query for all server data
+✅ Type all props and functions
+✅ Use `cn()` for conditional classes
+
+### Don'ts
+❌ Don't put business logic in `app/`
+❌ Don't store API data in Redux
+❌ Don't create routes outside `app/`
+❌ Don't use `any` type
+❌ Don't skip Zod validation
+
+## Docker
+- Multi-stage build with standalone output
+- Nginx as reverse proxy
+- Environment variables: Use `.env.example` as template
+
+## Common Tasks
+
+### Adding a New Feature
+1. Create folder: `features/[feature-name]/`
+2. Add types in `types/index.ts`
+3. Add Zod schemas in `schemas/index.ts`
+4. Create API functions in `api/[feature-name]Api.ts`
+5. Create hooks in `hooks/use[FeatureName].ts`
+6. Build components in `components/`
+7. Create routes in `app/` as needed
+
+### Adding a New Page
+1. Create route in `app/` (e.g., `app/(dashboard)/new-page/page.tsx`)
+2. Use Server Component if possible
+3. Import feature components as needed
+4. Add to navigation in dashboard layout
+
+### Adding Env Variables
+1. Add to `.env.example`
+2. Update `config/env.ts` Zod schema
+3. Update Docker configs if needed
+
+## Notes
+- This boilerplate uses mock APIs; replace with real backend calls
+- Nginx config in `nginx/default.conf` (reverse proxy pattern)
+- CSS lint warnings for `@theme` and `@apply` are expected (Tailwind v4)
+- **For AI Agents**: Use `context7` MCP to fetch the latest documentation for any library used in this project. This ensures you have up-to-date information about Next.js 16, Tailwind v4, TanStack Query v5, and other dependencies, leading to better code generation and fewer outdated patterns.
