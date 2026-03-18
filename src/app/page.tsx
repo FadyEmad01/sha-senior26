@@ -1,6 +1,6 @@
+import EditorialAccordion from "@/features/home/components/EditorialAccordion";
 import Footer from "@/features/home/components/Footer";
 import Hero from "@/features/home/components/Hero";
-
 import Intro from "@/features/home/components/Intro";
 
 export default function Home() {
@@ -8,6 +8,7 @@ export default function Home() {
     <main className="relative w-full">
       <Hero />
       <Intro />
+      <EditorialAccordion />
       <Footer />
     </main>
   );

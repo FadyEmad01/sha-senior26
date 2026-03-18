@@ -46,7 +46,7 @@ export default function Hero() {
       {/* Massive Text Behind */}
       <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
         <h1 className="font-serif text-[13vw] md:text-[11vw] tracking-tight font-bold text-navy whitespace-nowrap opacity-90 select-none">
-          CLASS OF 2024
+          CLASS OF 2026
         </h1>
       </div>
 
