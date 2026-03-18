@@ -8,7 +8,7 @@ export default function Home() {
     <main className="relative w-full">
       <Hero />
       <Intro />
-      <EditorialAccordion />
+      {/* <EditorialAccordion /> */}
       <Footer />
     </main>
   );

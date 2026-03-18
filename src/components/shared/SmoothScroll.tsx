@@ -1,6 +1,8 @@
 "use client";
 
 import Lenis from "@studio-freight/lenis";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import { useEffect } from "react";
 
 export default function SmoothScroll({
@@ -23,14 +25,22 @@ export default function SmoothScroll({
     // biome-ignore lint/suspicious/noExplicitAny: allow global lenis
     (window as any).lenis = lenis;
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    gsap.registerPlugin(ScrollTrigger);
 
-    requestAnimationFrame(raf);
+    // Sync Lenis scroll with GSAP ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
+
+    // Sync GSAP ticker with Lenis requestAnimationFrame
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
+      gsap.ticker.remove((time) => {
+        lenis.raf(time * 1000);
+      });
       lenis.destroy();
       // biome-ignore lint/suspicious/noExplicitAny: allow global lenis
       delete (window as any).lenis;

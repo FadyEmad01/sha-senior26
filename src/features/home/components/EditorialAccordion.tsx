@@ -41,8 +41,6 @@ const vignettes = [
   },
 ];
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function EditorialAccordion() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -53,6 +51,8 @@ export default function EditorialAccordion() {
 
   useGSAP(
     () => {
+      gsap.registerPlugin(ScrollTrigger);
+
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 768px)", () => {
