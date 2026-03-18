@@ -1,11 +1,10 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useForm } from "react-hook-form";
+import { ErrorBlock } from "@/components/shared/error-block";
+import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -14,11 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ErrorBlock } from "@/components/shared/error-block";
-import { LoadingSpinner } from "@/components/shared/loading-spinner";
-
-import { registerSchema, type RegisterInput } from "../schemas";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useRegister } from "../hooks/use-auth";
+import { type RegisterInput, registerSchema } from "../schemas";
 
 export function RegisterForm() {
   const { mutate: registerUser, isPending, error } = useRegister();
@@ -53,15 +51,9 @@ export function RegisterForm() {
 
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              placeholder="John Doe"
-              {...register("name")}
-            />
+            <Input id="name" placeholder="John Doe" {...register("name")} />
             {errors.name && (
-              <p className="text-sm text-destructive">
-                {errors.name.message}
-              </p>
+              <p className="text-sm text-destructive">{errors.name.message}</p>
             )}
           </div>
 
@@ -74,9 +66,7 @@ export function RegisterForm() {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">
-                {errors.email.message}
-              </p>
+              <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
 

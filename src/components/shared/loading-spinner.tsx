@@ -16,6 +16,7 @@ export function LoadingSpinner({
   size = "md",
 }: LoadingSpinnerProps) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: Spinner role
     <div
       className={cn(
         "animate-spin rounded-full border-2 border-muted border-t-primary",
