@@ -1,24 +1,26 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
+import type { Metadata } from "next";
+import { Inter, Roboto_Slab } from "next/font/google";
 import { Providers } from "@/components/shared/providers";
+import SmoothScroll from "@/components/shared/SmoothScroll";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500"], // Regular, Medium
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const robotoSlab = Roboto_Slab({
+  variable: "--font-roboto-slab",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], // Regular, Medium, SemiBold, Bold
 });
 
 export const metadata: Metadata = {
   title: "SHA Senior App",
-  description: "Next.js 16 boilerplate with senior developer conventions",
+  description: "Senior Year Nostalgic Landing Page",
 };
 
 export default function RootLayout({
@@ -28,11 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${inter.variable} ${robotoSlab.variable} antialiased`}>
         <Providers>
-          {children}
+          <SmoothScroll>{children}</SmoothScroll>
         </Providers>
         <Analytics />
         <SpeedInsights />

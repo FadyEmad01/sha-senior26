@@ -1,11 +1,10 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useForm } from "react-hook-form";
+import { ErrorBlock } from "@/components/shared/error-block";
+import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -14,11 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ErrorBlock } from "@/components/shared/error-block";
-import { LoadingSpinner } from "@/components/shared/loading-spinner";
-
-import { loginSchema, type LoginInput } from "../schemas";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useLogin } from "../hooks/use-auth";
+import { type LoginInput, loginSchema } from "../schemas";
 
 export function LoginForm() {
   const { mutate: login, isPending, error } = useLogin();
@@ -56,9 +54,7 @@ export function LoginForm() {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">
-                {errors.email.message}
-              </p>
+              <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
 

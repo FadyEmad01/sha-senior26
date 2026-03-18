@@ -1,13 +1,13 @@
 import axiosInstance from "@/lib/api/axios-instance";
 import type {
+  AuthUser,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
-  AuthUser,
 } from "../types";
 
-// Mock API 
+// Mock API
 export const authApi = {
   login: async (data: LoginRequest): Promise<LoginResponse> => {
     const response = await axiosInstance.post<LoginResponse>(

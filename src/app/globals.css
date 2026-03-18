@@ -91,6 +91,11 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
+  /* Custom Aesthetic Colors */
+  --color-cream: #f8f0e5;
+  --color-navy: #082052;
+  --color-sand: #d9cdb8;
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
 
@@ -127,8 +132,8 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* Fonts */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-roboto-slab);
 }
 
 /* ──────────────────────────────────────────────
@@ -136,8 +141,8 @@
    ────────────────────────────────────────────── */
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--color-cream);
+  color: var(--color-navy);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
