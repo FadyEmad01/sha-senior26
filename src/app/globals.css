@@ -7,7 +7,8 @@
 
 :root {
   /* Background & Foreground */
-  --background: #ffffff;
+  /* --background: #ffffff; */
+  --background: #F8F8F8;
   --foreground: #0a0a0a;
 
   /* Card */
@@ -127,8 +128,11 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* Fonts */
-  --font-sans: var(--font-geist-sans);
+  /* --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono); */
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
 }
 
 /* ──────────────────────────────────────────────
