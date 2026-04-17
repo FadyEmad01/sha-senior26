@@ -120,99 +120,102 @@ export default function Intro({ children }: IntroProps) {
   if (!mounted) return null
 
   return (
-    <div className="w-dvw h-dvh relative overflow-hidden">
+    <>
+    
+      <div className="w-full min-h-dvh relative overflow-hidden">
 
-      {/* ── Main Hero 
+        {/* ── Main Hero 
        ────────────────────────────────── */}
-      {/* {phase === "done" && <Hero />} */}
-      {/* {phase === "done" && <GraduationHero />} */}
-      {phase === "done" && children}
+        {/* {phase === "done" && <Hero />} */}
+        {/* {phase === "done" && <GraduationHero />} */}
+        {phase === "done" && children}
 
-      {/* ── Intro text ───────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {showIntro && (
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center z-10"
-            exit={{ opacity: 0 }}
-            transition={transitions.gentle}         // ← from config
-          >
-            <div className="flex flex-col sm:flex-row items-center justify-center sm:gap-4 font-medium">
+        {/* ── Intro text ───────────────────────────────────────────────── */}
+        <AnimatePresence>
+          {showIntro && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center z-10"
+              exit={{ opacity: 0 }}
+              transition={transitions.gentle}         // ← from config
+            >
+              <div className="flex flex-col sm:flex-row items-center justify-center sm:gap-4 font-medium">
 
-              <motion.span
-                className="text-3xl sm:text-7xl font-sans"
-                animate={isExpanding ? leftSlide : textRest}
-                transition={makeTransition("slideOut", 0.06)}  // ← helper
-              >
-                senior
-              </motion.span>
+                <motion.span
+                  className="text-3xl sm:text-7xl font-sans"
+                  animate={isExpanding ? leftSlide : textRest}
+                  transition={makeTransition("slideOut", 0.06)}  // ← helper
+                >
+                  senior
+                </motion.span>
 
-              <motion.div
-                ref={mediaRef}
-                className="overflow-hidden pt-1"
-                variants={revealVariants}
-                initial="initial"
-                animate={phase !== "idle" ? "animate" : "initial"}
-                onAnimationComplete={handleRevealComplete}
-                style={{ visibility: isExpanding ? "hidden" : "visible" }}
-              >
-                <img
-                  src="/images/Hero.jpg"
-                  alt="hero"
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
+                <motion.div
+                  ref={mediaRef}
+                  className="overflow-hidden pt-1"
+                  variants={revealVariants}
+                  initial="initial"
+                  animate={phase !== "idle" ? "animate" : "initial"}
+                  onAnimationComplete={handleRevealComplete}
+                  style={{ visibility: isExpanding ? "hidden" : "visible" }}
+                >
+                  <img
+                    src="/images/Hero.jpg"
+                    alt="hero"
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
 
-              <motion.span
-                className="font-serif"
-                animate={isExpanding ? rightSlide : textRest}
-                transition={makeTransition("slideOut", 0.06)}  // ← helper
-                style={{ display: "inline-flex", alignItems: "center" }}
-              >
-                <Counter
-                  value={counterValue}
-                  fontSize={fontSize}
-                  places={[1000, 100, 10, 1]}
-                  gap={0}
-                  fontWeight="500"
-                  textColor="currentColor"
-                  counterStyle={{ fontStyle: "italic" }}
-                  gradientFrom="#f8f8f8"
-                  gradientTo="transparent"
-                  gradientHeight={Math.round(fontSize * 0.25)}
-                />
-              </motion.span>
+                <motion.span
+                  className="font-serif"
+                  animate={isExpanding ? rightSlide : textRest}
+                  transition={makeTransition("slideOut", 0.06)}  // ← helper
+                  style={{ display: "inline-flex", alignItems: "center" }}
+                >
+                  <Counter
+                    value={counterValue}
+                    fontSize={fontSize}
+                    places={[1000, 100, 10, 1]}
+                    gap={0}
+                    fontWeight="500"
+                    textColor="currentColor"
+                    counterStyle={{ fontStyle: "italic" }}
+                    gradientFrom="#f8f8f8"
+                    gradientTo="transparent"
+                    gradientHeight={Math.round(fontSize * 0.25)}
+                  />
+                </motion.span>
 
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* ── Overlay ──────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {isExpanding && imageBounds && (
-          <motion.div
-            className="absolute overflow-hidden"
-            style={{ zIndex: 50 }}
-            initial={{
-              top: imageBounds.top,
-              left: imageBounds.left,
-              width: imageBounds.width,
-              height: imageBounds.height,
-              clipPath: "inset(0% 0% 0% 0%)",
-            }}
-            animate={overlayAnimate}
-            transition={overlayTransition}
-            onAnimationComplete={handleOverlayComplete}
-          >
-            <img
-              src="/images/Hero.jpg"
-              alt="hero"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* ── Overlay ──────────────────────────────────────────────────── */}
+        <AnimatePresence>
+          {isExpanding && imageBounds && (
+            <motion.div
+              className="absolute overflow-hidden"
+              style={{ zIndex: 50 }}
+              initial={{
+                top: imageBounds.top,
+                left: imageBounds.left,
+                width: imageBounds.width,
+                height: imageBounds.height,
+                clipPath: "inset(0% 0% 0% 0%)",
+              }}
+              animate={overlayAnimate}
+              transition={overlayTransition}
+              onAnimationComplete={handleOverlayComplete}
+            >
+              <img
+                src="/images/Hero.jpg"
+                alt="hero"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-    </div>
+      </div>
+    </>
   )
 }
